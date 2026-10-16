@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:PokedexMAUI.Views"
+             xmlns:models="clr-namespace:PokedexMAUI.Models"
+             x:Class="PokedexMAUI.Views.CadastroPokemonPage"
+             x:DataType="views:CadastroPokemonPage"
+             Title="{Binding TituloTela}">
+    <Grid RowDefinitions="*,Auto" Padding="20" RowSpacing="16"
+          MaximumWidthRequest="760" HorizontalOptions="Fill">
+        <ScrollView>
+            <VerticalStackLayout Spacing="18">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="{Binding TituloTela}" Style="{StaticResource Heading}" />
+                    <Label Text="Tela de Pokemons, registre já o seu"
+                           Style="{StaticResource Caption}" />
+                </VerticalStackLayout>
+
+                <Border Stroke="{StaticResource Line}" StrokeShape="RoundRectangle 18"
+                        BackgroundColor="White" Padding="18">
+                    <VerticalStackLayout Spacing="12">
+                        <Image Source="{Binding ImagemAtual, Converter={StaticResource ImagemBytesConverter}}"
+                               HeightRequest="170" Aspect="AspectFit"
+                               SemanticProperties.Description="Imagem do Pokémon" />
+                        <Button Text="Selecionar imagem" Style="{StaticResource SecondaryButton}"
+                                Clicked="OnImagemClicked" />
+                        <Button Text="Remover imagem" Style="{StaticResource SecondaryButton}"
+                                Clicked="OnRemoverImagemClicked" IsVisible="{Binding TemImagem}" />
+                        <Label Text="PNG ou JPG de até 5 MB. A imagem é opcional."
+                               Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <VerticalStackLayout Spacing="7">
+                    <Label Text="Nome do Pokémon" Style="{StaticResource FieldLabel}" />
+                    <Border Style="{StaticResource FieldBorder}">
+                        <Entry x:Name="NomeEntry" Placeholder="Ex.: Pikachu" MaxLength="60"
+                               ReturnType="Next" SemanticProperties.Description="Nome do Pokémon" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="7">
+                    <Label Text="Tipo" Style="{StaticResource FieldLabel}" />
+                    <Border Style="{StaticResource FieldBorder}">
+                        <Picker x:Name="TipoPicker" Title="Selecione um tipo" ItemsSource="{Binding Tipos}"
+                                SemanticProperties.Description="Tipo do Pokémon" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Poderes" Style="{StaticResource FieldLabel}" />
+                    <Label Text="Adicione pelo menos um poder pro pokemon"
+                           Style="{StaticResource Caption}" />
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Border Style="{StaticResource FieldBorder}">
+                            <Entry x:Name="PoderEntry" Placeholder="Ex.: Choque do Trovão" MaxLength="60"
+                                   ReturnType="Done" Completed="OnAdicionarPoderClicked"
+                                   SemanticProperties.Description="Nome do poder" />
+                        </Border>
+                        <Button Grid.Column="1" Text="Adicionar" Clicked="OnAdicionarPoderClicked" />
+                    </Grid>
+                    <FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Poderes}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:Poder">
+                                <Border BackgroundColor="#E8EDF5" StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 10" Margin="0,0,8,8" Padding="12,2,2,2">
+                                    <HorizontalStackLayout Spacing="5">
+                                        <Label Text="{Binding Nome}" VerticalOptions="Center"
+                                               MaximumWidthRequest="210" LineBreakMode="WordWrap" />
+                                        <Button Text="×" FontSize="20" BackgroundColor="Transparent"
+                                                TextColor="{StaticResource Muted}" Padding="8,0"
+                                                MinimumHeightRequest="44" MinimumWidthRequest="44"
+                                                CommandParameter="{Binding .}" Clicked="OnRemoverPoderClicked"
+                                                SemanticProperties.Description="Remover este poder" />
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
+                </VerticalStackLayout>
+
+                <Button Text="Excluir Pokémon" Style="{StaticResource DangerButton}"
+                        IsVisible="{Binding Editando}" Clicked="OnExcluirClicked" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="12">
+            <Button Text="Cancelar" Style="{StaticResource SecondaryButton}" Clicked="OnCancelarClicked" />
+            <Button Grid.Column="1" Text="Salvar Pokémon ou bixo, vai saber." Clicked="OnSalvarClicked" />
+        </Grid>
+
+        <Grid Grid.RowSpan="2" BackgroundColor="#DBF4F6FA" IsVisible="{Binding Ocupado}">
+            <ActivityIndicator IsRunning="{Binding Ocupado}" Color="{StaticResource Primary}"
+                               HorizontalOptions="Center" VerticalOptions="Center" />
+        </Grid>
+    </Grid>
+</ContentPage>

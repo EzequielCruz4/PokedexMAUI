@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:PokedexMAUI.Views"
+             x:Class="PokedexMAUI.Views.BancoPage"
+             x:DataType="views:BancoPage"
+             Title="Banco de dados">
+    <Grid Padding="20" MaximumWidthRequest="760" HorizontalOptions="Fill">
+        <ScrollView>
+            <VerticalStackLayout Spacing="20">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Seus dados" Style="{StaticResource Heading}" />
+                    <Label Text="Sua coleção fica salva neste dispositivo, mesmo depois de fechar o app."
+                           Style="{StaticResource Caption}" />
+                </VerticalStackLayout>
+                <Border BackgroundColor="White" Stroke="{StaticResource Line}"
+                        StrokeShape="RoundRectangle 18" Padding="20">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Minha coleção" FontSize="19" FontAttributes="Bold" />
+                        <Label Text="{Binding Resumo}" FontSize="16" />
+                        <Label Text="Pokémon, imagens e poderes ficam juntos no arquivo pokedex.db3."
+                               Style="{StaticResource Caption}" />
+                    </VerticalStackLayout>
+                </Border>
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Onde o banco está salvo" Style="{StaticResource FieldLabel}" />
+                    <Border Style="{StaticResource FieldBorder}" Padding="14">
+                        <Label Text="{Binding CaminhoBanco}" FontSize="12" LineBreakMode="CharacterWrap" />
+                    </Border>
+                    <Button Text="Copiar caminho" Style="{StaticResource SecondaryButton}" Clicked="OnCopiarClicked" />
+                </VerticalStackLayout>
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Guarde uma cópia" FontSize="19" FontAttributes="Bold" />
+                    <Label Text="A cópia inclui todos os cadastros, imagens e poderes."
+                           Style="{StaticResource Caption}" />
+                    <Button Text="Exportar banco" Clicked="OnExportarClicked" />
+                    <Label Text="No Windows, escolha uma pasta. No Android, use o menu de compartilhamento."
+                           Style="{StaticResource Caption}" />
+                </VerticalStackLayout>
+                <Label Text="Desinstalar o aplicativo ou limpar seus dados pode apagar a coleção. Guarde uma cópia antes."
+                       Style="{StaticResource Caption}" />
+            </VerticalStackLayout>
+        </ScrollView>
+        <Grid BackgroundColor="#DBF4F6FA" IsVisible="{Binding Ocupado}">
+            <ActivityIndicator IsRunning="{Binding Ocupado}" Color="{StaticResource Primary}"
+                               HorizontalOptions="Center" VerticalOptions="Center" />
+        </Grid>
+    </Grid>
+</ContentPage>

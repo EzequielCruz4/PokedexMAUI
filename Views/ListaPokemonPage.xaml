@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:PokedexMAUI.Views"
+             xmlns:models="clr-namespace:PokedexMAUI.Models"
+             x:Class="PokedexMAUI.Views.ListaPokemonPage"
+             x:DataType="views:ListaPokemonPage"
+             Title="Pokédex">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Banco" Clicked="OnBancoClicked" />
+    </ContentPage.ToolbarItems>
+    <Grid Padding="20" RowDefinitions="Auto,Auto,Auto,*,Auto" RowSpacing="16"
+          MaximumWidthRequest="1140" HorizontalOptions="Fill">
+        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Minha Pokédex" Style="{StaticResource Heading}" />
+                <Label Text="Descubra, cadastre e monte sua coleção."
+                       Style="{StaticResource Caption}" />
+            </VerticalStackLayout>
+            <Button Grid.Column="1" Text="+ Novo" Clicked="OnNovoClicked"
+                    VerticalOptions="Center" SemanticProperties.Description="Cadastrar um novo Pokémon" />
+        </Grid>
+
+        <Grid Grid.Row="1" RowDefinitions="Auto,Auto" RowSpacing="10">
+            <Border Style="{StaticResource FieldBorder}">
+                <SearchBar x:Name="BuscaBar" Placeholder="Buscar por nome ou poder"
+                           TextColor="{StaticResource Ink}" PlaceholderColor="{StaticResource Muted}"
+                           BackgroundColor="Transparent" TextChanged="OnBuscaAlterada" />
+            </Border>
+            <Border Grid.Row="1" Style="{StaticResource FieldBorder}">
+                <Picker x:Name="TipoFiltroPicker" Title="Filtrar por tipo"
+                        ItemsSource="{Binding TiposFiltro}" SelectedIndex="0"
+                        SelectedIndexChanged="OnFiltroAlterado" />
+            </Border>
+        </Grid>
+
+        <Label Grid.Row="2" Text="{Binding ContagemTexto}" FontAttributes="Bold"
+               TextColor="{StaticResource Muted}" />
+
+        <CollectionView Grid.Row="3" x:Name="PokemonCollection" ItemsSource="{Binding Pokemons}"
+                        SelectionMode="Single" SelectionChanged="OnPokemonSelecionado">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="1"
+                                 HorizontalItemSpacing="12" VerticalItemSpacing="12" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="16,24" Spacing="12" HorizontalOptions="Center">
+                    <Image Source="pokemon_placeholder.png" HeightRequest="90" WidthRequest="90" />
+                    <Label Text="{Binding MensagemVazia}" FontSize="19" FontAttributes="Bold"
+                           HorizontalTextAlignment="Center" />
+                    <Label Text="{Binding AjudaVazia}" Style="{StaticResource Caption}"
+                           HorizontalTextAlignment="Center" />
+                    <Button Text="Carregar 6 exemplos" Style="{StaticResource SecondaryButton}"
+                            Clicked="OnExemplosClicked" IsVisible="{Binding ColecaoVazia}" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Pokemon">
+                    <Border Stroke="{StaticResource Line}" StrokeShape="RoundRectangle 18"
+                            BackgroundColor="White" Padding="14">
+                        <Grid ColumnDefinitions="98,*" ColumnSpacing="14" MinimumHeightRequest="122">
+                            <Border BackgroundColor="#F4F6FA" StrokeThickness="0" StrokeShape="RoundRectangle 14"
+                                    HeightRequest="108" VerticalOptions="Center">
+                                <Image Source="{Binding Imagem, Converter={StaticResource ImagemBytesConverter}}"
+                                       Aspect="AspectFit" Margin="5" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
+                                <Label Text="{Binding Codigo}" Style="{StaticResource Caption}" />
+                                <Label Text="{Binding Nome}" FontSize="22" FontAttributes="Bold" LineBreakMode="TailTruncation" />
+                                <Border BackgroundColor="#E8EDF5" StrokeThickness="0" StrokeShape="RoundRectangle 8"
+                                        HorizontalOptions="Start" Padding="10,3">
+                                    <Label Text="{Binding Tipo}" FontAttributes="Bold" FontSize="12" />
+                                </Border>
+                                <Label Text="{Binding ResumoPoderes}" Style="{StaticResource Caption}"
+                                       MaxLines="2" LineBreakMode="TailTruncation" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Label Grid.Row="4" Text="Toque para ver a ficha"
+               Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
+
+        <Grid Grid.RowSpan="5" BackgroundColor="#DBF4F6FA" IsVisible="{Binding Ocupado}">
+            <ActivityIndicator IsRunning="{Binding Ocupado}" Color="{StaticResource Primary}"
+                               VerticalOptions="Center" HorizontalOptions="Center" />
+        </Grid>
+    </Grid>
+</ContentPage>

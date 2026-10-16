@@ -1,0 +1,10 @@
+<api type="debug" assembly-name="PokedexMAUI" mvid="2f353cc4a8c644c086d8954b4d0fdc46">
+  <java-to-managed>
+    <entry java-name="crc64e7bf1d321f85f258/MainActivity" managed-name="PokedexMAUI.MainActivity, PokedexMAUI" managed-type-token-id="33554438" />
+    <entry java-name="crc64e7bf1d321f85f258/MainApplication" managed-name="PokedexMAUI.MainApplication, PokedexMAUI" managed-type-token-id="33554439" />
+  </java-to-managed>
+  <managed-to-java>
+    <entry java-name="crc64e7bf1d321f85f258/MainActivity" managed-name="PokedexMAUI.MainActivity, PokedexMAUI" managed-type-token-id="33554438" />
+    <entry java-name="crc64e7bf1d321f85f258/MainApplication" managed-name="PokedexMAUI.MainApplication, PokedexMAUI" managed-type-token-id="33554439" />
+  </managed-to-java>
+</api>
